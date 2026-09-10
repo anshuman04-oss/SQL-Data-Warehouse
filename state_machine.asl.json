@@ -1,0 +1,388 @@
+{
+  "Comment": "A description of my state machine",
+  "StartAt": "Parallel",
+  "States": {
+    "Parallel": {
+      "Type": "Parallel",
+      "Next": "bronze_to_silver",
+      "Branches": [
+        {
+          "StartAt": "DeleteTable",
+          "States": {
+            "DeleteTable": {
+              "Type": "Task",
+              "Arguments": {
+                "DatabaseName": "silver",
+                "Name": "crm_sales_details"
+              },
+              "Resource": "arn:aws:states:::aws-sdk:glue:deleteTable",
+              "End": true,
+              "Catch": [
+                {
+                  "ErrorEquals": [
+                    "Glue.EntityNotFoundException"
+                  ],
+                  "Next": "Pass"
+                }
+              ]
+            },
+            "Pass": {
+              "Type": "Pass",
+              "End": true
+            }
+          }
+        },
+        {
+          "StartAt": "DeleteTable (1)",
+          "States": {
+            "DeleteTable (1)": {
+              "Type": "Task",
+              "Arguments": {
+                "DatabaseName": "silver",
+                "Name": "erp_px_cat_g1v2"
+              },
+              "Resource": "arn:aws:states:::aws-sdk:glue:deleteTable",
+              "End": true,
+              "Catch": [
+                {
+                  "ErrorEquals": [
+                    "Glue.EntityNotFoundException"
+                  ],
+                  "Next": "Pass (1)"
+                }
+              ]
+            },
+            "Pass (1)": {
+              "Type": "Pass",
+              "End": true
+            }
+          }
+        },
+        {
+          "StartAt": "DeleteTable (2)",
+          "States": {
+            "DeleteTable (2)": {
+              "Type": "Task",
+              "Arguments": {
+                "DatabaseName": "silver",
+                "Name": "erp_loc_a101"
+              },
+              "Resource": "arn:aws:states:::aws-sdk:glue:deleteTable",
+              "End": true,
+              "Catch": [
+                {
+                  "ErrorEquals": [
+                    "Glue.EntityNotFoundException"
+                  ],
+                  "Next": "Pass (2)"
+                }
+              ]
+            },
+            "Pass (2)": {
+              "Type": "Pass",
+              "End": true
+            }
+          }
+        },
+        {
+          "StartAt": "DeleteTable (3)",
+          "States": {
+            "DeleteTable (3)": {
+              "Type": "Task",
+              "Arguments": {
+                "DatabaseName": "silver",
+                "Name": "erp_cust_az12"
+              },
+              "Resource": "arn:aws:states:::aws-sdk:glue:deleteTable",
+              "End": true,
+              "Catch": [
+                {
+                  "ErrorEquals": [
+                    "Glue.EntityNotFoundException"
+                  ],
+                  "Next": "Pass (3)"
+                }
+              ]
+            },
+            "Pass (3)": {
+              "Type": "Pass",
+              "End": true
+            }
+          }
+        },
+        {
+          "StartAt": "DeleteTable (4)",
+          "States": {
+            "DeleteTable (4)": {
+              "Type": "Task",
+              "Arguments": {
+                "DatabaseName": "silver",
+                "Name": "crm_prod_info"
+              },
+              "Resource": "arn:aws:states:::aws-sdk:glue:deleteTable",
+              "End": true,
+              "Catch": [
+                {
+                  "ErrorEquals": [
+                    "Glue.EntityNotFoundException"
+                  ],
+                  "Next": "Pass (4)"
+                }
+              ]
+            },
+            "Pass (4)": {
+              "Type": "Pass",
+              "End": true
+            }
+          }
+        },
+        {
+          "StartAt": "DeleteTable (5)",
+          "States": {
+            "DeleteTable (5)": {
+              "Type": "Task",
+              "Arguments": {
+                "DatabaseName": "silver",
+                "Name": "crm_cust_info"
+              },
+              "Resource": "arn:aws:states:::aws-sdk:glue:deleteTable",
+              "End": true,
+              "Catch": [
+                {
+                  "ErrorEquals": [
+                    "Glue.EntityNotFoundException"
+                  ],
+                  "Next": "Pass (5)"
+                }
+              ]
+            },
+            "Pass (5)": {
+              "Type": "Pass",
+              "End": true
+            }
+          }
+        },
+        {
+          "StartAt": "DeleteTable (6)",
+          "States": {
+            "DeleteTable (6)": {
+              "Type": "Task",
+              "Arguments": {
+                "DatabaseName": "gold",
+                "Name": "fact_sales"
+              },
+              "Resource": "arn:aws:states:::aws-sdk:glue:deleteTable",
+              "End": true,
+              "Catch": [
+                {
+                  "ErrorEquals": [
+                    "Glue.EntityNotFoundException"
+                  ],
+                  "Next": "Pass (6)"
+                }
+              ]
+            },
+            "Pass (6)": {
+              "Type": "Pass",
+              "End": true
+            }
+          }
+        },
+        {
+          "StartAt": "DeleteTable (7)",
+          "States": {
+            "DeleteTable (7)": {
+              "Type": "Task",
+              "Arguments": {
+                "DatabaseName": "gold",
+                "Name": "dim_customers"
+              },
+              "Resource": "arn:aws:states:::aws-sdk:glue:deleteTable",
+              "End": true,
+              "Catch": [
+                {
+                  "ErrorEquals": [
+                    "Glue.EntityNotFoundException"
+                  ],
+                  "Next": "Pass (7)"
+                }
+              ]
+            },
+            "Pass (7)": {
+              "Type": "Pass",
+              "End": true
+            }
+          }
+        },
+        {
+          "StartAt": "DeleteTable (8)",
+          "States": {
+            "DeleteTable (8)": {
+              "Type": "Task",
+              "Arguments": {
+                "DatabaseName": "gold",
+                "Name": "dim_products"
+              },
+              "Resource": "arn:aws:states:::aws-sdk:glue:deleteTable",
+              "End": true,
+              "Catch": [
+                {
+                  "ErrorEquals": [
+                    "Glue.EntityNotFoundException"
+                  ],
+                  "Next": "Pass (8)"
+                }
+              ]
+            },
+            "Pass (8)": {
+              "Type": "Pass",
+              "End": true
+            }
+          }
+        }
+      ]
+    },
+    "bronze_to_silver": {
+      "Type": "Parallel",
+      "Branches": [
+        {
+          "StartAt": "bronze_to_silver_erp_job1",
+          "States": {
+            "bronze_to_silver_erp_job1": {
+              "Type": "Task",
+              "Resource": "arn:aws:states:::glue:startJobRun.sync",
+              "Arguments": {
+                "JobName": "bronze_to_silver_erp_PX_CAT_G1V2"
+              },
+              "End": true
+            }
+          }
+        },
+        {
+          "StartAt": "bronze_to_silver_erp_job2",
+          "States": {
+            "bronze_to_silver_erp_job2": {
+              "Type": "Task",
+              "Resource": "arn:aws:states:::glue:startJobRun.sync",
+              "Arguments": {
+                "JobName": "bronze_to_silver_erp_LOC_A101"
+              },
+              "End": true
+            }
+          }
+        },
+        {
+          "StartAt": "bronze_to_silver_erp_job3",
+          "States": {
+            "bronze_to_silver_erp_job3": {
+              "Type": "Task",
+              "Resource": "arn:aws:states:::glue:startJobRun",
+              "Arguments": {
+                "JobName": "bronze_to_silver_erp_CUST_AZ12"
+              },
+              "End": true
+            }
+          }
+        },
+        {
+          "StartAt": "bronze_to_silver_crm_job1",
+          "States": {
+            "bronze_to_silver_crm_job1": {
+              "Type": "Task",
+              "Resource": "arn:aws:states:::glue:startJobRun.sync",
+              "Arguments": {
+                "JobName": "bronze_to_silver_crm_prd_info"
+              },
+              "End": true
+            }
+          }
+        },
+        {
+          "StartAt": "bronze_to_silver_crm_job2",
+          "States": {
+            "bronze_to_silver_crm_job2": {
+              "Type": "Task",
+              "Resource": "arn:aws:states:::glue:startJobRun",
+              "Arguments": {
+                "JobName": "bronze_to_silver_crm_cust_info"
+              },
+              "End": true
+            }
+          }
+        }
+      ],
+      "Next": "bronze_to_silver_crm_job3"
+    },
+    "bronze_to_silver_crm_job3": {
+      "Type": "Task",
+      "Resource": "arn:aws:states:::glue:startJobRun.sync",
+      "Arguments": {
+        "JobName": "bronze_to_silver_crm_sales_details"
+      },
+      "Next": "silver_to_gold"
+    },
+    "silver_to_gold": {
+      "Type": "Parallel",
+      "Branches": [
+        {
+          "StartAt": "silver_to_gole_job1",
+          "States": {
+            "silver_to_gole_job1": {
+              "Type": "Task",
+              "Resource": "arn:aws:states:::glue:startJobRun.sync",
+              "Arguments": {
+                "JobName": "silver_to_gold_dim_products"
+              },
+              "End": true
+            }
+          }
+        },
+        {
+          "StartAt": "silver_to_gole_job2",
+          "States": {
+            "silver_to_gole_job2": {
+              "Type": "Task",
+              "Resource": "arn:aws:states:::glue:startJobRun.sync",
+              "Arguments": {
+                "JobName": "silver_to_gold_dim_customers"
+              },
+              "End": true
+            }
+          }
+        }
+      ],
+      "Next": "silver_to_gole_job3"
+    },
+    "silver_to_gole_job3": {
+      "Type": "Task",
+      "Resource": "arn:aws:states:::glue:startJobRun.sync",
+      "Arguments": {
+        "JobName": "silver_to_gold_fact_sales"
+      },
+      "Next": "Start_view_execution"
+    },
+    "Start_view_execution": {
+      "Type": "Task",
+      "Resource": "arn:aws:states:::athena:startQueryExecution.sync",
+      "Arguments": {
+        "QueryString": "CREATE OR REPLACE VIEW gold.customer_sales_360 AS SELECT sales.sls_order_dt,sales.sls_sales, sales.sls_price, customer.right_col1 AS country,product.prd_nm FROM gold.fact_sales AS sales LEFT JOIN gold.dim_customers AS customer ON sales.sls_cust_id = customer.cst_id LEFT JOIN gold.dim_products AS product ON sales.sls_prd_key = product.prd_key;",
+        "WorkGroup": "primary",
+        "ResultConfiguration": {
+          "OutputLocation": "s3://sql-data-warehouse-project-anshuman/query_results_silver_gold/"
+        }
+      },
+      "Next": "CreateIngestion"
+    },
+    "CreateIngestion": {
+      "Type": "Task",
+      "Arguments": {
+        "AwsAccountId": "054037123542",
+        "DataSetId": "eeb9e17b-8298-487c-b0db-e2356bf66cbc",
+        "IngestionId": "{% $uuid() %}"
+      },
+      "Resource": "arn:aws:states:::aws-sdk:quicksight:createIngestion",
+      "End": true
+    }
+  },
+  "QueryLanguage": "JSONata"
+}
